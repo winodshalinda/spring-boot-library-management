@@ -2,6 +2,7 @@ package lk.ijse.cmjd.librarymanagement.service.impl;
 
 import lk.ijse.cmjd.librarymanagement.Dao.MemberDao;
 import lk.ijse.cmjd.librarymanagement.dto.MemberDto;
+import lk.ijse.cmjd.librarymanagement.entity.MemberEntity;
 import lk.ijse.cmjd.librarymanagement.exception.MemberNotFoundException;
 import lk.ijse.cmjd.librarymanagement.exception.StaffNotFoundException;
 import lk.ijse.cmjd.librarymanagement.service.MembersService;
@@ -21,20 +22,21 @@ public class MemberServiceImpl implements MembersService {
     private  final EntityDtoConversion entityDTOConversion;
 
     @Override
-    public void saveMember(MemberDto member) {
+    public MemberDto saveMember(MemberDto member) {
         member.setMemberId(UtilityData.generateMemberId());
         member.setMemberShipDate(UtilityData.generateTodayDate());
-        memberDao.save(entityDTOConversion.toMemberEntity(member));
+        MemberEntity savedMemberEntity = memberDao.save(entityDTOConversion.toMemberEntity(member));
+        return entityDTOConversion.toMemberDTO(savedMemberEntity);
     }
 
     @Override
     public void updateMember(String memberId, MemberDto member) {
-        var foundMemeber = memberDao.findById(memberId);
-        if(!foundMemeber.isPresent()){
+        var foundMember = memberDao.findById(memberId);
+        if(!foundMember.isPresent()){
             throw new MemberNotFoundException("Member id "+memberId+" not found");
         }
-        foundMemeber.get().setName(member.getName());
-        foundMemeber.get().setEmail(member.getEmail());
+        foundMember.get().setName(member.getName());
+        foundMember.get().setEmail(member.getEmail());
     }
 
     @Override

@@ -48,7 +48,7 @@ public class EntityDtoConversion {
         }.getType());
     }
 
-    // Memeber
+    // Member
 
     public MemberDto toMemberDTO(MemberEntity member) {
         return modelMapper.map(member, MemberDto.class);
@@ -62,6 +62,14 @@ public class EntityDtoConversion {
         return modelMapper.map(members, new TypeToken<List<MemberDto>>() {
         }
                 .getType());
+    }
+
+    //Lending
+    public LendingDto toLendingDTO(LendingEntity lending) {
+        return modelMapper.map(lending, LendingDto.class);
+    }
+    public LendingEntity toLendingEntity(LendingDto lendingDTO) {
+        return  modelMapper.map(lendingDTO, LendingEntity.class);
     }
 
     public List<LendingDto> toAllLendingDto(List<LendingEntity> entityList) {

@@ -37,7 +37,7 @@ public class LendingServiceImpl implements LendingService {
     private final EntityDtoConversion entityDtoConversion;
 
     @Override
-    public void addLending(LendingDto lendingDto) {
+    public LendingDto addLending(LendingDto lendingDto) {
         String book = lendingDto.getBook();
         String member = lendingDto.getMember();
         //Availability of the book
@@ -51,8 +51,9 @@ public class LendingServiceImpl implements LendingService {
             lendingDto.setReturnDate(UtilityData.generateReturnDate());
             lendingDto.setOrverDue(0L);
             lendingDto.setFineAmount(0.00);
-            lendingDao.save(LendingMapping.toLendingEntity(lendingDto,bookEntity,memberEntity));
+            LendingEntity savedEntity = lendingDao.save(LendingMapping.toLendingEntity(lendingDto, bookEntity, memberEntity));
             bookDao.deductBookQtyBasedOnLending(book);
+            return entityDtoConversion.toLendingDTO(savedEntity);
         }else {
             throw new EnoughBookNotFoundException("Not AvlQty of Book");
         }
