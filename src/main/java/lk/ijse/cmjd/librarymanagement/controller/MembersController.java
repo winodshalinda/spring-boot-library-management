@@ -26,9 +26,9 @@ private final MembersService membersService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addMember(@RequestBody MemberDto dto) {
-        membersService.saveMember(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<MemberDto> addMember(@RequestBody MemberDto dto) {
+        MemberDto memberDto = membersService.saveMember(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberDto);
     }
 
     @DeleteMapping("{id}")

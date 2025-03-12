@@ -25,10 +25,10 @@ public class StaffController {
         return "hello";
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addStaff(@RequestBody StaffDto dto) {
-        staffService.saveStaff(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StaffDto> addStaff(@RequestBody StaffDto dto) {
+        StaffDto staffDto = staffService.saveStaff(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(staffDto);
     }
 
     @DeleteMapping("{id}")

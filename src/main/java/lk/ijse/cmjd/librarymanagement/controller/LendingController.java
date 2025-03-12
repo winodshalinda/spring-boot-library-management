@@ -8,6 +8,7 @@ import lk.ijse.cmjd.librarymanagement.exception.MemberNotFoundException;
 import lk.ijse.cmjd.librarymanagement.service.LendingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,14 +20,14 @@ import java.util.List;
 public class LendingController {
     private final LendingService lendingService;
 
-    @PostMapping
-    public ResponseEntity<Void> addLending(@RequestBody LendingDto lendingDto) {
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<LendingDto> addLending(@RequestBody LendingDto lendingDto) {
         if (lendingDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            lendingService.addLending(lendingDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            LendingDto addLendingDto = lendingService.addLending(lendingDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(addLendingDto);
         } catch (BookNotFoundException | MemberNotFoundException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -2,6 +2,7 @@ package lk.ijse.cmjd.librarymanagement.service.impl;
 
 import lk.ijse.cmjd.librarymanagement.Dao.StaffDao;
 import lk.ijse.cmjd.librarymanagement.dto.StaffDto;
+import lk.ijse.cmjd.librarymanagement.entity.StaffEntity;
 import lk.ijse.cmjd.librarymanagement.service.StaffService;
 import lk.ijse.cmjd.librarymanagement.utill.EntityDtoConversion;
 import lk.ijse.cmjd.librarymanagement.exception.StaffNotFoundException;
@@ -19,11 +20,12 @@ public class StaffServiceImpl implements StaffService {
     private final EntityDtoConversion entityDTOConversion;
 
     @Override
-    public void saveStaff(StaffDto staffDto) {
+    public StaffDto saveStaff(StaffDto staffDto) {
         staffDto.setStaffId(UtilityData.generateStaffId());
         staffDto.setJoinDate(UtilityData.generateTodayDate());
         staffDto.setLastUpdated(UtilityData.generateTodayDate());
-        staffDao.save(entityDTOConversion.toStaffEntity(staffDto));
+        StaffEntity entity = staffDao.save(entityDTOConversion.toStaffEntity(staffDto));
+        return entityDTOConversion.toStaffDTO(entity);
     }
 
     @Override
